@@ -4,6 +4,22 @@
 
 ### 什么是 Gonka？
 Gonka 是一个去中心化的高效 AI 计算网络——由运行它的人共同运行。它作为中心化云服务的成本效益和高效替代方案，用于 AI 模型训练和推理。作为一个协议，它不是公司或初创企业。
+
+- 从区块链的角度来看，Gonka 是去中心化 AI 网络的基础账本和协调层（L1）。它记录余额、交易以及用于证明 Hosts 已正确执行 AI 工作的加密证明，而所有实际计算（例如推理和训练）都在链下进行。
+- 从网络的角度来看，Gonka 是一个由参与者组成的综合生态系统，包括 Hosts 和 Developers，他们通过去中心化基础设施进行交互。在 Gonka 区块链的支持下，该网络分发任务、验证结果，并仅对可验证的有效工作给予奖励，从而为 AI 工作负载创造一个具有竞争性和可扩展性的环境。
+
+### Gonka 正在解决什么问题？
+
+Gonka 是一种去中心化的 AI 基础设施，旨在减少对中心化云服务提供商的依赖，并比传统的去中心化网络更高效地利用计算能力。其目标是将尽可能多的计算能力用于有价值的 AI 任务，例如推理和训练，同时尽量减少由于共识开销而造成的资源浪费。
+
+### Gonka 生态系统中的关键参与者是谁？
+
+Gonka 生态系统包含四类关键参与者：
+
+- Developer（开发者） 通过利用网络的分布式计算能力来构建并部署 AI 应用。
+- Gonka Contributor（Gonka 贡献者） 参与核心区块链代码库的开发、协议升级、性能优化、安全补丁以及新功能集成。
+- Holder（持币者） 持有网络的原生代币，这仅意味着拥有一个包含代币的 Gonka 钱包。持币者可以持有代币、转账或出售代币，也可以将其用于推理服务的支付，并按照协议规则使用这些代币。成为持币者并不意味着除普通代币持有之外承担任何义务、责任或治理角色。
+- Host（算力提供者） 向网络提供计算能力。Hosts 执行推理以及其他计算任务，并根据其贡献的计算能力按比例获得奖励，前提是其保持诚实参与和可靠运行。Hosts 构成了网络的核心基础。只有 Hosts 在网络中拥有投票权。该投票权代表其在治理中的权重，用于提出和投票决定协议相关决策、参数调整以及升级。任何 Host 在处理推理请求时都会作为 Validator（验证者）、Transfer Agent（转移代理）和 Executor（执行者） 行动（这些并不是预定义或链上的角色，而是在处理推理请求时承担的动态运行职能）。
     
 ### 什么是 GNK 代币？
 GNK 是 Gonka 网络的原生代币。它用于激励参与者、为资源定价，并确保网络的可持续增长。
@@ -22,8 +38,8 @@ GNK 是 Gonka 网络的原生代币。它用于激励参与者、为资源定价
 	请注意，目前存在虚假的 GNK 上线信息和页面，包括在 CoinGecko 和 CoinMarketCap 上。 这些页面并不代表官方的 GNK 代币，也与项目方没有任何关联。 目前 GNK 尚未在任何交易所上线或可交易。 任何声称是 GNK 的代币，无论是在 Solana 还是其他网络上，都不是官方的 GNK 资产。请务必通过官方渠道核实所有相关信息。
 
 ### 协议为何高效？
-我们与"大玩家"的区别在于定价，以及无论用户规模大小，推理都会被公平分配这一事实。要了解更多信息，请查看[白皮书](https://gonka.ai/whitepaper.pdf)。
-    
+Gonka 与那些“行业巨头”的区别在于其定价方式，以及即使 Host 的规模不同，推理任务也会被 公平地分配。若想了解更多内容，请查看[Whitepaper](https://gonka.ai/whitepaper.pdf)。
+  
 ### 网络如何运作？
 网络的运作是协作性的，取决于您希望扮演的角色：
 
@@ -219,6 +235,211 @@ Base Weight +
 
 ### 治理参数本身可以更改吗？
 可以。所有关键的治理规则——法定人数、多数阈值和否决阈值——都是链上可配置的，可以通过治理提案进行更新。这允许网络随着参与模式和计算经济的变化而演进决策规则。
+
+### 如果我没有冷钱包（cold key）的访问权限而无法投票，或者希望由其他密钥代为投票，该怎么办?
+
+如果持有投票权的密钥不是你日常使用的密钥，可以提前设置治理投票授权（governance voting permission）。
+
+在这种机制中：
+
+- Granter = 拥有投票权的账户（冷钱包）
+- Grantee = 被授权代表 Granter 提交投票的账户（热钱包）
+
+常见有两种情况：
+
+**1.你想投票，但你没有持有投票权的那个密钥的访问权限。**
+
+请联系该密钥的所有者，并请求他们授予你的密钥代表其进行投票的权限。如果没有该授权，你的密钥无法为该投票权提交治理投票。
+
+**2. 你希望另一个密钥代表你投票。**
+
+从持有投票权的密钥运行下面的 grant 命令。这将授权 grantee 密钥代表你提交治理投票。
+该委托仅允许对治理提案进行投票。grantee 仍然可以为其自己的密钥进行投票。granter 可以随时撤销该权限。
+
+1) 授予投票权限（从 granter 密钥运行）
+=== "Command"
+
+    ```
+    ./inferenced tx authz grant <GRANTEE_GONKA_ADDRESS> generic \
+      --msg-type=/cosmos.gov.v1beta1.MsgVote \
+      --from=<GRANTER_KEY_NAME> \
+      --chain-id=gonka-mainnet \
+      --expiration=<UNIX_TIMESTAMP> \
+      --home .inference \
+      --keyring-backend file
+    ```
+    
+=== "Example response"
+
+    ```
+    {
+        "height": "0",
+        "txhash": "8D96FB6FC06FFB928FBC89FE950689CD040C7F338C197BA856175EC7462A3FFA",
+        "codespace": "",
+        "code": 0,
+        "data": "",
+        "raw_log": "",
+        "logs": [],
+        "info": "",
+        "gas_wanted": "0",
+        "gas_used": "0",
+        "tx": null,
+        "timestamp": "",
+        "events": []
+    }
+    ```
+    
+2) 验证授权是否存在（可从任意节点运行）
+=== "Command"
+    ```
+    ./inferenced query authz grants <GRANTER_GONKA_ADDRESS> <GRANTEE_GONKA_ADDRESS> \
+      --node="http://<MAINNET_NODE_URL>:26657" \
+      --output=json | jq .
+    ```
+    
+=== "Example response"
+
+    ```
+    {
+        "grants": [
+            {
+                "authorization": {
+                    "type": "cosmos-sdk/GenericAuthorization",
+                    "value": {
+                        "msg": "/cosmos.gov.v1beta1.MsgVote"
+                    }
+                },
+                "expiration": "2026-12-03T18:38:18Z"
+            }
+        ],
+        "pagination": {
+            "total": "1"
+        }
+    }
+    ```
+    
+3) 使用 grantee 进行投票
+=== "Command"
+    ```
+    # Find the proposal ID which you are voting for - use it as <VOTE_PROPOSAL_ID> in the voting body 
+    ./inferenced query gov proposals --output json
+    
+    # Prepare the file with the voting body
+    cat > /tmp/authz-vote.json << 'EOF'
+    {
+      "body": {
+        "messages": [
+          {
+            "@type": "/cosmos.authz.v1beta1.MsgExec",
+            "grantee": "<GRANTEE_GONKA_ADDRESS>",
+            "msgs": [
+              {
+                "@type": "/cosmos.gov.v1beta1.MsgVote",
+                "proposal_id": "<VOTE_PROPOSAL_ID>",
+                "voter": "<GRANTER_GONKA_ADDRESS>",
+                "option": "VOTE_OPTION_YES"
+              }
+            ]
+          }
+        ]
+      }
+    }
+    EOF
+    
+    
+    # Vote using the file 
+    ./inferenced tx authz exec /tmp/authz-vote.json \  --from=<GRANTEE_KEY_NAME> \ 
+    --chain-id=gonka-mainnet \
+    --home .inference \
+    --keyring-backend file \
+    --node="http://<MAINNET_NODE_URL>:26657" -y
+    ```
+    
+=== "Example response"
+
+    ```
+    {
+        "pagination": {
+            "total": "1"
+        },
+        "proposals": [
+            {
+                "deposit_end_time": "2026-03-06T10:40:07.016920026Z",
+                "final_tally_result": {
+                    "abstain_count": "0",
+                    "no_count": "0",
+                    "no_with_veto_count": "0",
+                    "yes_count": "0"
+                },
+                "id": "1",
+                "messages": [
+                    {
+                        "type": "cosmos-sdk/MsgSoftwareUpgrade",
+                        "value": {
+                            "authority": "gonka10d07y265gmmuvt4z0w9aw880jnsr700j2h5m33",
+                            "plan": {
+                                "height": "406062",
+                                "info": "{\n \"binaries\":{\n \"linux/amd64\":\"https://github.com/product-science/race-releases/releases/download/release%2Fv0.2.10-testnet1/inferenced-amd64.zip?checksum=sha256:fb71310427436aebac32813735231882fca420cf0d94b036f8cacd055d0e1c78\"\n },\n \"api_binaries\":{\n \"linux/amd64\":\"https://github.com/product-science/race-releases/releases/download/release%2Fv0.2.10-testnet1/decentralized-api-amd64.zip?checksum=sha256:6fe214f4bb2d831c02ce407682820d95d01e6ae94a33fe9c4617b80e0ca716ce\"\n }\n }",
+                                "name": "v0.2.10",
+                                "time": "0001-01-01T00:00:00Z"
+                            }
+                        }
+                    }
+                ],
+                "proposer": "gonka1xfvr8mywcrxrcrryvj8c5d2grvyjdj5c90fd88",
+                "status": 2,
+                "submit_time": "2026-03-04T10:40:07.016920026Z",
+                "summary": "Upgrade Proposal v0.2.10",
+                "title": "Upgrade Proposal v0.2.10",
+                "total_deposit": [
+                    {
+                        "amount": "50000000",
+                        "denom": "ngonka"
+                    }
+                ],
+                "voting_end_time": "2026-03-04T10:50:07.016920026Z",
+                "voting_start_time": "2026-03-04T10:40:07.016920026Z"
+            }
+        ]
+    }
+    ```
+    
+投票选项：
+
+- `VOTE_OPTION_YES`
+- `VOTE_OPTION_ABSTAIN`
+- `VOTE_OPTION_NO`
+- `VOTE_OPTION_NO_WITH_VETO`
+
+4) 撤销委托（从 granter 密钥运行）
+=== "Command"
+
+    ```
+    ./inferenced tx authz revoke <GRANTEE_GONKA_ADDRESS> /cosmos.gov.v1beta1.MsgVote \
+      --from=<GRANTER_KEY_NAME> \
+      --chain-id=gonka-mainnet \
+      --home .inference \
+      --keyring-backend file
+    ```
+=== "Example response"
+
+    ```
+    {
+        code: 0
+        codespace: ""
+        data: ""
+        events: []
+        gas_used: "0"
+        gas_wanted: "0"
+        height: "0"
+        info: ""
+        logs: []
+        raw_log: ""
+        timestamp: ""
+        tx: null
+        txhash: A2C3CDA9E95DCF143C0D8981A4F573F1E68879ECF4903B25BA97383C3F2FDFBA
+    }
+    ```
 
 ## 改进提案
 
@@ -756,6 +977,14 @@ v0.2.8 升级完成后，PoC v2 的逻辑已可用，但**尚未用于权重分�
     ```
     
 ## 计算证明（PoC）
+
+### 什么是 Proof-of-Compute？
+
+Proof of Compute (PoC) 是一种共识机制，它以可验证的基于 Transformer 的计算能力取代基于资本或基于哈希的权重。它定义了如何衡量真实的 AI 计算能力，并将其转换为治理权重和共识权重。PoC 通过在每个 epoch 结束时发生的短时间同步 Sprint 来执行。在 Sprint 之外的时间里，该 epoch 用于进行真实世界的 AI 计算。在实际使用中，Proof of Compute (PoC) 和 Sprint 这两个术语经常被互换使用。当提到 “Next PoC” 或 “PoC phase” 时，通常指的是下一次 Sprint，也就是 Proof of Compute 的执行阶段。
+
+### 什么是 Sprint？
+
+Sprint 是 Proof of Compute 的一个阶段。在 Sprint 期间，所有 Hosts 会同时在一个具有随机层的 transformer 上运行与 AI 相关的推理任务，并针对一系列 nonce 进行计算，从而生成输出向量。某个 Host 在下一 epoch 的投票权重与其处理的 nonce 数量成正比，前提是其报告的输出能够被验证为由所要求的 Sprint 模型生成。
 
 ### 如何模拟计算证明（PoC）？
 
